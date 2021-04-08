@@ -1,5 +1,5 @@
 #!/bin/bash
-export LC_ALL=en_US.UTF_8
+# export LC_ALL=en_US.UTF_8
 
 if [ ! -d scripts ]; then
   echo "You should run this script from the root git folder."
@@ -12,7 +12,7 @@ export PATH="${MOSES}:$PATH"
 
 # Raw files path
 RAW=./data/task1/raw
-TOK=./data/task1/tok
+TOK=./task1-data/tok
 PAIRS=./data/task1/pairs
 SUFFIX="lc.norm.tok"
 
@@ -25,7 +25,7 @@ mkdir -p $TOK &> /dev/null
 ##############################
 # Preprocess files in parallel
 ##############################
-for TYPE in "train" "val" "test_2016_flickr" "test_2017_flickr" "test_2017_mscoco"; do
+for TYPE in "train" "val" "test_2016_flickr" "test_2017_flickr" "test_2018_flickr" "test_2017_mscoco"; do
   for LLANG in $LANGS; do
     INP="${RAW}/${TYPE}.${LLANG}.gz"
     OUT="${TOK}/${TYPE}.${SUFFIX}.${LLANG}"

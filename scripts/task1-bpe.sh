@@ -1,5 +1,5 @@
 #!/bin/bash
-export LC_ALL=en_US.UTF_8
+# export LC_ALL=en_US.UTF_8
 
 # BPE related variables
 BPE_MOPS=
@@ -25,22 +25,18 @@ if [ -z $BPE_MOPS ] ; then
 fi
 
 
-ROOT=./data/task1
 PAIRS=./data/task1/pairs
 LANGS=`tr '-' '\n' < $PAIRS | sort -u`
 TRGLANGS=`cut -d'-' -f2 < $PAIRS | sort -u`
 
-TOK=${ROOT}/tok
-BPE=${ROOT}/bpe${BPE_MOPS}
+TOK=./task1-data/tok
+BPE=./task1-data
 
 BPEPATH="./scripts/subword-nmt"
 BPEAPPLY=${BPEPATH}/apply_bpe.py
 BPELEARN=${BPEPATH}/learn_joint_bpe_and_vocab.py
 
 SUFFIX="lc.norm.tok"
-
-# Create folders
-mkdir -p $BPE &> /dev/null
 
 #####
 # BPE
@@ -52,7 +48,7 @@ for TLANG in $TRGLANGS; do
   if [ -f $BPEFILE ]; then
     continue
   fi
-
+  echo "Learning BPE for $LPAIR"
   $BPELEARN -s $BPE_MOPS -o $BPEFILE \
     --input ${TOK}/train.${SUFFIX}.en \
             ${TOK}/train.${SUFFIX}.${TLANG} \
@@ -65,11 +61,11 @@ wait
 for LPAIR in `cat $PAIRS`; do
   BPEFILE="${BPE}/${LPAIR}/codes"
 
-  for TYPE in "train" "val" "test_2016_flickr" "test_2017_flickr" "test_2017_mscoco"; do
+  for TYPE in "train" "val" "test_2016_flickr" "test_2017_flickr" "test_2018_flickr" "test_2017_mscoco"; do
     # Iterate over languages
     for LLANG in `echo $LPAIR | tr '-' '\n'`; do
       INP="${TOK}/${TYPE}.${SUFFIX}.${LLANG}"
-      OUT="${BPE}/${LPAIR}/${TYPE}.${SUFFIX}.bpe.${LLANG}"
+      OUT="${BPE}/${LPAIR}/${TYPE}.${SUFFIX}.bpe${BPE_MOPS}.${LLANG}"
       if [ -f $INP ] && [ ! -f $OUT ]; then
         echo "Applying BPE to $INP"
         $BPEAPPLY -c $BPEFILE --vocabulary \

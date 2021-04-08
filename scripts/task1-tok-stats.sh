@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # Run from main GIT folder
-pushd data/task1/tok &> /dev/null
+pushd task1-data/text &> /dev/null
 
-PAIRS=../pairs
+PAIRS=./data/task1/pairs
 LANGS=`tr '-' '\n' < $PAIRS | sort -u`
 
-for split in train val test_2016_flickr test_2017_flickr test_2017_mscoco; do
+for split in train val test_2016_flickr test_2017_flickr test_2018_flickr test_2017_mscoco; do
   echo "$split"
 
   for lang in $LANGS; do
-    FILE="${split}.lc.norm.tok.${lang}"
+    FILE="task1-data/tok/${split}.lc.norm.tok.${lang}"
     if [ -f $FILE ]; then
       WC=`cat $FILE | wc`
       N_SENTS=`echo $WC | cut -d' ' -f1`
