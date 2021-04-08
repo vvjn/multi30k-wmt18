@@ -1,6 +1,8 @@
 Multi30k Data Repository
 --
 
+Originally from [here](https://github.com/multi30k/dataset.git).
+
 ### Getting ready
 
 Along with the data files, we also provide:
@@ -13,7 +15,7 @@ the users.
 In order to fetch everything correctly, you need to clone the repository with `--recursive` flag:
 
 ```
-$ git clone --recursive https://github.com/multi30k/dataset.git multi30k-dataset
+$ git clone --recursive https://github.com/vvjn/multi30k-wmt18.git
 ```
 
 ### Visual features
